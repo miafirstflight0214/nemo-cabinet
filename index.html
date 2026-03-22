@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nemo 的自然观察馆</title>
+<style>
+:root{
+  --bg:#e8dfd1;
+  --paper:#f7f0e4;
+  --paper-soft:#fbf7f0;
+  --paper-deep:#efe4d2;
+  --ink:#1f262b;
+  --muted:#677177;
+  --line:#d1c4b1;
+  --green:#566f4f;
+  --gold:#9c8157;
+  --shadow:0 18px 48px rgba(43,31,18,.10);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:linear-gradient(180deg,#ede4d7,#e6ddcf 52%,#dfd4c5 100%);
+  color:var(--ink);
+  font-family:Georgia,"Times New Roman","Noto Serif SC",serif;
+  -webkit-font-smoothing:antialiased;
+}
+a{text-decoration:none;color:inherit}
+img{display:block;max-width:100%}
+.page{max-width:1280px;margin:0 auto;padding:20px 20px 56px}
+.topbar{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:18px}
+.pills{display:flex;gap:10px;flex-wrap:wrap}
+.pill{padding:8px 14px;border:1px solid rgba(31,38,43,.12);border-radius:999px;background:rgba(255,255,255,.42);font-size:13px;color:var(--muted)}
+.pill.active{background:rgba(255,255,255,.72);color:var(--green)}
+.hero{
+  background:linear-gradient(180deg,var(--paper),var(--paper-deep));
+  border:1px solid rgba(60,46,28,.12);
+  border-radius:28px;
+  box-shadow:var(--shadow);
+  overflow:hidden;
+  display:grid;
+  grid-template-columns:1.05fr .95fr;
+  min-height:520px;
+}
+.hero-media{position:relative;background:#d7cebf}
+.hero-media img{width:100%;height:100%;object-fit:cover;filter:saturate(.92) contrast(1.03)}
+.hero-note{
+  position:absolute;left:28px;bottom:28px;width:250px;
+  padding:16px 18px;border:1px solid rgba(209,196,177,.9);border-radius:18px;
+  background:rgba(247,240,228,.92);backdrop-filter:blur(8px);box-shadow:0 8px 24px rgba(0,0,0,.08)
+}
+.hero-note small,.hero-copy .eyebrow,.section-header small,.card-kicker,.drawer-label{
+  display:block;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)
+}
+.hero-note p{margin-top:8px;font-size:14px;line-height:1.7;color:#4e5b62}
+.hero-copy{padding:44px 46px 40px;display:flex;flex-direction:column;justify-content:space-between}
+.hero-copy h1{font-size:clamp(3.2rem,5.2vw,5.8rem);line-height:.92;letter-spacing:-.045em;font-weight:600;max-width:10ch}
+.hero-deck{margin-top:16px;max-width:34ch;font-size:18px;line-height:1.82;color:#2f383c}
+.hero-copy .eyebrow{margin-bottom:14px}
+.hero-meta{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:28px}
+.hero-meta .meta{padding:14px 14px 12px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.35)}
+.hero-meta .meta strong{display:block;margin-top:6px;font-size:15px;color:var(--ink)}
+.section{margin-top:26px}
+.section-header{display:flex;justify-content:space-between;gap:18px;align-items:end;margin-bottom:18px}
+.section-header h2{font-size:32px;line-height:1;letter-spacing:-.03em;font-weight:600}
+.section-header p{max-width:40ch;color:var(--muted);font-size:15px;line-height:1.8}
+.drawers{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.drawer{
+  padding:18px 18px 16px;border:1px solid rgba(31,38,43,.12);border-radius:18px;
+  background:rgba(255,255,255,.38);box-shadow:0 10px 22px rgba(0,0,0,.04);transition:transform .25s ease,border-color .25s ease
+}
+.drawer:hover{transform:translateY(-2px);border-color:rgba(86,111,79,.28)}
+.drawer h3{margin-top:10px;font-size:20px;font-weight:500}
+.drawer p{margin-top:8px;font-size:14px;line-height:1.75;color:var(--muted)}
+.grid{display:grid;grid-template-columns:1.05fr .95fr;gap:18px;align-items:start}
+.card{
+  background:linear-gradient(180deg,var(--paper-soft),rgba(255,255,255,.55));
+  border:1px solid rgba(31,38,43,.10);border-radius:22px;box-shadow:0 14px 28px rgba(0,0,0,.05);overflow:hidden
+}
+.feature-card{display:grid;grid-template-columns:.9fr 1.1fr;min-height:430px}
+.feature-card .card-media{background:#d7cebf}
+.feature-card .card-media img{width:100%;height:100%;object-fit:cover}
+.card-body{padding:30px 30px 28px}
+.card-kicker{margin-bottom:10px}
+.card-title{font-size:42px;line-height:.98;letter-spacing:-.035em;font-weight:600;margin-bottom:10px}
+.card-latin{font-size:16px;font-style:italic;color:var(--muted);margin-bottom:16px}
+.card-copy{font-size:16px;line-height:1.9;color:#374248;max-width:34ch}
+.card-tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+.tag{padding:7px 10px;border-radius:999px;background:rgba(86,111,79,.08);border:1px solid rgba(86,111,79,.16);font-size:12px;color:var(--green)}
+.card-note{margin-top:20px;padding-top:16px;border-top:1px solid var(--line);font-size:15px;line-height:1.8;color:var(--muted)}
+.stack{display:grid;gap:14px}
+.mini-card{padding:22px;border:1px solid rgba(31,38,43,.10);border-radius:20px;background:rgba(255,255,255,.4)}
+.mini-card h3{font-size:26px;line-height:1.02;letter-spacing:-.03em;font-weight:600;margin:8px 0}
+.mini-card .latin{font-size:14px;color:var(--muted);font-style:italic;margin-bottom:10px}
+.mini-card p{font-size:14px;line-height:1.8;color:#435057}
+.field-notes{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.note-card{padding:20px;border:1px solid rgba(31,38,43,.10);border-radius:18px;background:rgba(255,255,255,.42)}
+.note-card h3{font-size:18px;margin:8px 0 10px;font-weight:600}
+.note-card p{font-size:14px;line-height:1.8;color:#49565d}
+.footer{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-top:18px;color:var(--muted);font-size:13px}
+@media (max-width: 980px){
+  .hero,.grid,.feature-card,.drawers,.field-notes{grid-template-columns:1fr}
+}
+@media (max-width: 640px){
+  .page{padding:14px}
+  .hero-copy,.card-body{padding:24px 20px}
+  .section-header{display:block}
+  .section-header p{margin-top:10px}
+  .card-title{font-size:32px}
+}
+</style>
+</head>
+<body>
+  <div class="page">
+    <div class="topbar">
+      <div class="pills">
+        <span class="pill active">Cabinet of Field Notes</span>
+        <span class="pill">Nemo</span>
+        <span class="pill">Natural Archive</span>
+      </div>
+      <div class="pills">
+        <span class="pill">Prototype</span>
+      </div>
+    </div>
+
+    <section class="hero">
+      <div class="hero-media">
+        <img src="images/resurrection-plant.png" alt="卷柏 / Resurrection plant">
+        <div class="hero-note">
+          <small>Observation</small>
+          <p>最迷人的不是“重新展开”，而是卷起来那一刻——像把身体折成一个小小的避难所。</p>
+        </div>
+      </div>
+      <div class="hero-copy">
+        <div>
+          <span class="eyebrow">Nemo 的自然观察馆</span>
+          <h1>把值得停留的自然细节，收进一座观察柜。</h1>
+          <p class="hero-deck">不是做成百科全书，也不是做成散文站。更像一座 field archive：图鉴、观察、机制、和那些一下子不会忘掉的自然形状。</p>
+        </div>
+        <div class="hero-meta">
+          <div class="meta"><small>形式</small><strong>Field guide / archive / cabinet</strong></div>
+          <div class="meta"><small>重点</small><strong>观察感先于讲解感</strong></div>
+          <div class="meta"><small>气质</small><strong>安静、克制、可查阅</strong></div>
+          <div class="meta"><small>内容单位</small><strong>每个条目是一个标本卡</strong></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <div>
+          <small>Cabinet drawers</small>
+          <h2>按柜子分，而不是按文章分</h2>
+        </div>
+        <p>不是时间线，也不是博客分类。更像观察柜上的抽屉标签：植物、海洋、鸟类、奇异生存机制，各自慢慢长出来。</p>
+      </div>
+      <div class="drawers">
+        <article class="drawer">
+          <span class="drawer-label">Drawer 01</span>
+          <h3>植物</h3>
+          <p>种子、卷柏、沙漠植物、会以结构保护自己的生命体。</p>
+        </article>
+        <article class="drawer">
+          <span class="drawer-label">Drawer 02</span>
+          <h3>海洋</h3>
+          <p>深海生物、拟态章鱼、吸血乌贼，以及那些看起来像来自别的世界的形态。</p>
+        </article>
+        <article class="drawer">
+          <span class="drawer-label">Drawer 03</span>
+          <h3>鸟类</h3>
+          <p>迁徙、集群、叫声、羽毛和飞行路径，偏向那些一眼就让人想停下来看的种类。</p>
+        </article>
+        <article class="drawer">
+          <span class="drawer-label">Drawer 04</span>
+          <h3>生存机制</h3>
+          <p>拟态、脱水耐受、群体行为、极端环境适应。比起结论，更想记录这些机制本身的形状。</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <div>
+          <small>Featured specimen</small>
+          <h2>先从一个条目开始</h2>
+        </div>
+        <p>每个条目不再是一篇文章，而是一张被整理过的 specimen card：图、名字、分类、核心观察、以及一条真正值得留下来的注解。</p>
+      </div>
+      <div class="grid">
+        <article class="card feature-card">
+          <div class="card-media"><img src="images/resurrection-plant.png" alt="卷柏"></div>
+          <div class="card-body">
+            <span class="card-kicker">Plant specimen</span>
+            <h3 class="card-title">卷柏</h3>
+            <div class="card-latin">Selaginella lepidophylla · Resurrection plant</div>
+            <p class="card-copy">卷柏最抓人的地方不是“复活”，而是会在真正危险来之前，先把自己卷进一个保护结构里。它看起来像奇迹，但本质上是一种非常老练的自我保护。</p>
+            <div class="card-tags">
+              <span class="tag">植物</span>
+              <span class="tag">脱水耐受</span>
+              <span class="tag">卷曲保护</span>
+            </div>
+            <div class="card-note">如果以后展开成完整条目，这里再进入更细的机制、数字和延伸阅读。首页只保留一张卡最核心的那部分。</div>
+          </div>
+        </article>
+        <div class="stack">
+          <article class="mini-card">
+            <span class="card-kicker">Marine specimen</span>
+            <h3>吸血乌贼</h3>
+            <div class="latin">Vampyroteuthis infernalis</div>
+            <p>与其说它可怕，不如说它把“深海”这个词本身的气氛长成了身体。</p>
+          </article>
+          <article class="mini-card">
+            <span class="card-kicker">Behaviour note</span>
+            <h3>雪雁</h3>
+            <div class="latin">Snow geese</div>
+            <p>一群鸟飞起来时，真正迷人的不只是单只个体，而是它们怎样共同形成一块会移动的秩序。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <div>
+          <small>Field notes</small>
+          <h2>比“知识”更前面的那一步</h2>
+        </div>
+        <p>这里不是先下定义，而是先留下观察。很多时候，一个项目真正的起点不是知识已经完整，而是某个东西先让人停下来。</p>
+      </div>
+      <div class="field-notes">
+        <article class="note-card">
+          <span class="card-kicker">How to read</span>
+          <h3>先看形状</h3>
+          <p>先记住它的轮廓、动作、保护方式，再去记名称和分类。这样这个自然条目才不会只是一个信息盒子。</p>
+        </article>
+        <article class="note-card">
+          <span class="card-kicker">Why this form</span>
+          <h3>先做成柜子</h3>
+          <p>柜子比书轻，也比文章更适合长期积累。每个条目先被放进去，之后再慢慢长成更完整的图鉴页。</p>
+        </article>
+        <article class="note-card">
+          <span class="card-kicker">Next</span>
+          <h3>再往下走</h3>
+          <p>下一步不是堆内容，而是建立真正的条目模板、分类系统和观察标记，让这个 archive 可以一直长。</p>
+        </article>
+      </div>
+    </section>
+
+    <div class="footer">
+      <span>Cabinet of Field Notes · Prototype</span>
+      <span>Nemo 的自然观察馆</span>
+    </div>
+  </div>
+</body>
+</html>
